@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results</title>
+</head>
+<body>
+    {% for piece in art_list %}
+        <p>
+        <table border = 1>
+            <tr>
+                <td>Title: {{piece.art}}</td>
+                <td rowspan = 4>
+                    {% if piece.image == "No link available" %}
+                        No image available.
+                    {% else %}
+                        <a href={{piece.image}}>
+                            <img height = 100 width = 100 border = 0 src={{piece.image}}>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                {% if piece.artist == '"None"' or piece.artist == "" %}
+                    <td>Artist: Unknown Artist</td>
+                {% else %}
+                    <td>Artist: "{{piece.artist}}"</td></tr>
+                {% endif %}
+            <tr><td>Year: "{{piece.year}}"</td></tr>
+            <tr><td>Museum: "{{piece.museum}}"</td></tr>
+        </table>
+        </p>
+    {% endfor %}
+</body>
+</html>

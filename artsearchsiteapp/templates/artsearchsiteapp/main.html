@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Art Searcher</title>
+</head>
+<body>
+
+    <form action="/results" method="get">{% csrf_token %}
+        <label for="search_term">Please enter your search term.</label>
+        <br>
+        <input id="search_term" type="text" name="search_term" >
+        <br>
+        <br>
+        <input type="submit" value="Search">
+    </form>
+
+</form>
+</body>
+</html>
