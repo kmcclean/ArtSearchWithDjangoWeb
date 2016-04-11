@@ -5,12 +5,15 @@
     <title>Results</title>
 </head>
 <body>
+{#    Loops over each piece of art to display the information about it.#}
     {% for piece in art_list %}
         <p>
         <table border = 1>
             <tr>
                 <td>Title: {{piece.art}}</td>
                 <td rowspan = 4>
+{#                    Checks to see if there is an image available, and displays it if there is, and the error message if#}
+{#                    there is not#}
                     {% if piece.image == "No link available" %}
                         No image available.
                     {% else %}
@@ -21,6 +24,7 @@
                 </td>
             </tr>
             <tr>
+{#                Checks to see if there is an artist name. If there is not, it displays the error message.#}
                 {% if piece.artist == '"None"' or piece.artist == "" %}
                     <td>Artist: Unknown Artist</td>
                 {% else %}

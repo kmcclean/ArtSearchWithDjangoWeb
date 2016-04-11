@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 from urllib import request
 from artsearcher.Art import Art
 import re
-import operator
 
 
 class ArtSearcher:
@@ -27,39 +26,6 @@ class ArtSearcher:
         for item in mia_list:
             master_list.append(item)
         return master_list
-
-    def create_artist_tuple(self, amaa_list, walker_list, mia_list):
-        # This creates a dictionary of all the artists and the number of times one of their pieces comes up in a search,
-        artist_dictionary = {}
-        artist_dictionary = self.artist_name_appearances(amaa_list, artist_dictionary)
-        artist_dictionary = self.artist_name_appearances(walker_list, artist_dictionary)
-        artist_dictionary = self.artist_name_appearances(mia_list, artist_dictionary)
-
-        # This sorts the artist dictionary by number of pieces.
-        # http://stackoverflow.com/questions/613183/sort-a-python-dictionary-by-value
-        sorted_artist_tuple = sorted(artist_dictionary.items(), key=operator.itemgetter(1), reverse=True)
-
-        return sorted_artist_tuple
-
-    def print_info(self, sorted_artist_tuple, mia_list, walker_list, amaa_list):
-
-        for name_tuple in sorted_artist_tuple:
-            print(str(name_tuple[0]) + ": " + str(name_tuple[1]) + " Pieces")
-
-        # This gives information about which museums have the most of a given artist.
-        print("MIA Pieces: " + str(len(mia_list)))
-        print("Walker Pieces: " + str(len(walker_list)))
-        print("American Museum-Asmat Art: " + str(len(amaa_list)))
-        print("")
-        for item in walker_list:
-            item.print_art_item()
-            print("")
-        for item in mia_list:
-            item.print_art_item()
-            print("")
-        for item in amaa_list:
-            item.print_art_item()
-            print("")
 
     # This is where a dictionary entry for each artist is created, with their number of appearances at museums counted.
     def artist_name_appearances(self, museum_list, artist_dictionary):
@@ -127,14 +93,8 @@ class ArtSearcher:
                 if "," in artist:
                     artist = artist[:artist.index(",")]
 
-                # There are some of the AMAA artists that are not collected correctly. This take care of those.
-                check = re.match('<li>(.*)</li>', artist)
-                if check:
-                    artist_list.append(check)
-                else:
-                    artist_list.append(artist)
-
-
+                artist = self.check_for_amaa_errors(artist)
+                artist_list.append(artist)
 
             # This gets the url for the image from the HTML that is pulled.
             for item5000 in soup_amaa1.find_all(attrs={"class": "thumbnail"}):
@@ -158,26 +118,26 @@ class ArtSearcher:
             else:
                 break
 
-        # This takes all the art pieces that have been found and creates an art object for each one.
+            amaa_results = self.create_amaa_results(titles, artist_list, image_link)
+            return amaa_results
+
+    # This takes all the art pieces that have been found and creates an art object for each one.
+    def create_amaa_results(self, titles, artist_list, image_link):
+        results = []
         counter = 0
-        print("\nResults")
         while counter < len(titles):
             a = Art(titles[counter], artist_list[counter], "Years Not Provided by AMAA", image_link[counter], "American Museum-Asmat Art")
-            get_year = re.match('(.*(\d\d\d\d))', titles[counter])
-            if get_year:
-                # print(titles[counter])
-                print(get_year.group(0))
-            # print(titles[counter] + str(get_year))
-            # if get_year != None:
-            #     get_year_string = str(get_year)
-            #     year = get_year_string[1:4]
-            #     a = Art(titles[counter], artist_list[counter], get_year, image_link[counter], "American Museum-Asmat Art")
-            # else:
-            #     a = Art(titles[counter], artist_list[counter], "Years Not Provided by AMAA", image_link[counter], "American Museum-Asmat Art")
-            amaa_results.append(a)
+            results.append(a)
             counter += 1
+        return results
 
-        return amaa_results
+    # There are some of the AMAA artists that are not collected correctly. This take care of those.
+    def check_for_amaa_errors(self, artist):
+        check = re.match('<li>(.*)</li>', artist)
+        if check:
+            return check
+        else:
+            return artist
 
     # this searches the Minneapolis Institute of Art, and creates an art objects
     # for pieces that are returned as searches.

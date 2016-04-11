@@ -5,6 +5,9 @@
     <title>Art Searcher</title>
 </head>
 <body>
+    <p> This searcher is designed to look for matches in the Asmat-American Museum of Art, the Walker Art Musuem, and
+        the Minneapolis Institute of Art. It will then display the name of the piece, the artist, the year it was created,
+        which museum it is at, and an image if one is available.</p>
 
     <form action="/results" method="get">{% csrf_token %}
         <label for="search_term">Please enter your search term.</label>

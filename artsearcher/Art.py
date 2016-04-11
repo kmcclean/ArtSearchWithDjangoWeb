@@ -8,10 +8,3 @@ class Art:
         self.year = year
         self.image = image_link
         self.museum = museum
-
-    def print_art_item(self):
-        print("Title: " + self.art)
-        print("Artist: " + self.artist)
-        print("Year: " + self.year)
-        print("Link: " + self.image)
-        print("Museum: " + self.museum)
