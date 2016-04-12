@@ -1,4 +1,3 @@
-from django.db import models
 from artsearcher.artsearchmain import ArtSearcher
 # Create your models here.
 

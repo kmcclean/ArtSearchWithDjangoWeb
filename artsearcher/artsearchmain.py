@@ -19,12 +19,15 @@ class ArtSearcher:
 
         # This is where the list that is returned is created.
         master_list = []
-        for item in amaa_list:
-            master_list.append(item)
-        for item in walker_list:
-            master_list.append(item)
-        for item in mia_list:
-            master_list.append(item)
+        if amaa_list:
+            for item in amaa_list:
+                master_list.append(item)
+        if walker_list:
+            for item in walker_list:
+                master_list.append(item)
+        if mia_list:
+            for item in mia_list:
+                master_list.append(item)
         return master_list
 
     # This is where a dictionary entry for each artist is created, with their number of appearances at museums counted.
