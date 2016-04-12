@@ -50,12 +50,11 @@ class ArtSearcher:
 
     # This creates an art object for the American Museum of Asmat Art.
     def create_amaa_object(self, seach_term):
-
         titles = []
         artist_possibles_list = []
         image_link = []
         artist_list = []
-        amaa_results = []
+
 
         # This is the base search url for the American Museum of Asmat Art searh
         soup_url = "http://artsatust.museumssites.com/collections/search-the-collections/search/search:" + seach_term
